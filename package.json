@@ -1,0 +1,21 @@
+{
+    "name": "k-project-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "handler.js",
+    "scripts": {
+        "start": "./node_modules/.bin/serverless offline -s dev",
+        "debug": "export SLS_DEBUG=* && node --inspect ./node_modules/.bin/serverless offline -s dev"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "serverless-offline": "^6.1.4"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "dotenv": "^8.2.0",
+        "serverless": "^1.67.0"
+    }
+}
