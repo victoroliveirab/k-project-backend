@@ -61,9 +61,6 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
-
   btc:
     handler: handler.getBTC
     events:
@@ -72,7 +69,7 @@ functions:
           method: get
 
   createUser:
-    handler: handler.createUser
+    handler: controllers/users.createUser
     events:
       - http:
           path: /users
