@@ -1,5 +1,5 @@
 const dbConnection = require("../config/db");
-const { createUser } = require("../services/users");
+const { createUser, subscribeToCoin } = require("../services/users");
 
 module.exports.createUser = async (event, context, callback) => {
     await dbConnection();
@@ -8,5 +8,17 @@ module.exports.createUser = async (event, context, callback) => {
     return {
         statusCode: 200,
         body: JSON.stringify(createUserResponse),
+    };
+};
+
+module.exports.subscribeToCoin = async (event, context, callback) => {
+    await dbConnection();
+    const { id } = event.pathParameters;
+    await subscribeToCoin(parseInt(id));
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            message: "ok",
+        }),
     };
 };

@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const coinObj = require("./coin");
+
+const coinSchema = coinObj.schema;
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -10,8 +13,15 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is required."],
     },
+
+    subscriptions: {
+        type: [coinSchema],
+    },
 });
 
 //UserSchema.pre("save", (next) => {});
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = {
+    schema: UserSchema,
+    model: mongoose.model("User", UserSchema),
+};

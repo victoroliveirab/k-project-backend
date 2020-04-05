@@ -1,14 +1,20 @@
 "use strict";
 
-const UserModel = require("../models/user");
+const User = require("../models/user");
 const { hashPassword, generateJwt } = require("../utils/jwt/index");
 
 module.exports.createUser = async (username, password) => {
     const hashed = hashPassword(password);
-    const user = new UserModel({ username, password: hashed });
+    const user = new User.model({
+        username,
+        password: hashed,
+        subscriptions: [],
+    });
     await user.save();
     return {
         message: "success",
         token: generateJwt(user.id),
     };
 };
+
+module.exports.subscribeToCoin = async (id) => {};

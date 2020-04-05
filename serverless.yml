@@ -61,12 +61,16 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  authorize:
+    handler: utils/auth/handler.checkJwt
+
   btc:
     handler: handler.getBTC
     events:
       - http:
           path: /btc
           method: get
+          authorizer: authorize
 
   createUser:
     handler: controllers/users.createUser
@@ -74,6 +78,23 @@ functions:
       - http:
           path: /users
           method: post
+
+  createCoin:
+    handler: controllers/coins.createCoin
+    events:
+      - http:
+          path: /coins
+          method: post
+          authorizer: authorize
+  
+  subscribe:
+    handler: controllers/users.subscribeToCoin
+    events:
+      - http:
+          path: /users/subscribe/{id}
+          method: post
+          authorizer: authorize
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
