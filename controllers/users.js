@@ -4,11 +4,18 @@ const { createUser, subscribeToCoin } = require("../services/users");
 module.exports.createUser = async (event, context, callback) => {
     await dbConnection();
     const { username, password } = JSON.parse(event.body);
-    const createUserResponse = await createUser(username, password);
-    return {
-        statusCode: 200,
-        body: JSON.stringify(createUserResponse),
-    };
+    try {
+        const response = await createUser(username, password);
+        return {
+            statusCode: 200,
+            body: JSON.stringify(response),
+        };
+    } catch (e) {
+        return {
+            statusCode: 403,
+            body: JSON.stringify(e),
+        };
+    }
 };
 
 module.exports.subscribeToCoin = async (event, context, callback) => {

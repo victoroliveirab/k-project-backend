@@ -10,7 +10,9 @@ module.exports.createUser = async (username, password) => {
         password: hashed,
         subscriptions: [],
     });
-    await user.save();
+    await user.save().catch((err) => {
+        throw err;
+    });
     return {
         message: "success",
         token: generateJwt(user.id),
