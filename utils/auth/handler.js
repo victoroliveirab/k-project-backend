@@ -26,3 +26,28 @@ module.exports.checkJwt = async (event, context, callback) => {
         });
     });
 };
+
+// Refactor both to DRY
+module.exports.checkJwtAndOwnId = async (event, context, callback) => {
+    const token = event.authorizationToken;
+    const { requesterId } = event.pathParameters;
+    jwt.verify(token, secret, null, (err, decoded) => {
+        if (err || decoded.id !== requesterId) {
+            return callback("Unauthorized");
+        }
+        callback(null, {
+            principalId: decoded.id,
+            policyDocument: {
+                Version: "2020-04-04",
+                Statement: [
+                    {
+                        Action: "lambda:InvokeFunction",
+                        Effect: "Allow",
+                        Resource: event.methodArn,
+                    },
+                ],
+            },
+            context,
+        });
+    });
+};

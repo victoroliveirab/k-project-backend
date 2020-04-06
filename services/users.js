@@ -19,4 +19,20 @@ module.exports.createUser = async (username, password) => {
     };
 };
 
+module.exports.login = async (username, password) => {
+    let user = {};
+    await User.model.findOne({ username }, (err, userFound) => {
+        if (err) throw err;
+        userFound.comparePassword(password, (err, correct) => {
+            if (err) throw err;
+            if (correct) {
+                user.id = userFound._id;
+                user.subscriptions = userFound.subscriptions;
+                user.token = generateJwt(user.id);
+            }
+        });
+    });
+    return user;
+};
+
 module.exports.subscribeToCoin = async (id) => {};

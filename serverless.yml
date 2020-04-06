@@ -61,8 +61,15 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  authorize:
+
+  ### Authorizers ###
+
+  # To do: come up with better naming
+  authorizeWithoutParams:
     handler: utils/auth/handler.checkJwt
+  
+  authorizeWithParams:
+    handler: utils/auth/handler.checkJwtAndOwnId
 
   ### Users ###
   createUser:
@@ -71,14 +78,21 @@ functions:
       - http:
           path: /users
           method: post
+  
+  login:
+    handler: controllers/users.login
+    events:
+      - http:
+          path: /login
+          method: post
 
   subscribe:
     handler: controllers/users.subscribeToCoin
     events:
       - http:
-          path: /users/{id}/subscribe ## should have coin id?
+          path: /users/{requesterId}/subscribe/{coinId} ## should have coin id?
           method: post
-          authorizer: authorize
+          authorizer: authorizeWithParams
 
     
   ### Coins ###
@@ -88,7 +102,7 @@ functions:
       - http:
           path: /btc
           method: get
-          authorizer: authorize
+          authorizer: authorizeWithoutParams
   
   createCoin:
     handler: controllers/coins.createCoin
@@ -96,7 +110,7 @@ functions:
       - http:
           path: /coins
           method: post
-          authorizer: authorize
+          authorizer: authorizeWithoutParams
     
   findCoinByName:
     handler: controllers/coins.findCoin
@@ -104,7 +118,7 @@ functions:
       - http:
           path: /coins
           method: get
-          authorizer: authorize
+          authorizer: authorizeWithoutParams
   
 
 

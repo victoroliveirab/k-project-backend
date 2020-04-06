@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const bcrypt = require("bcryptjs");
 
-const coinObj = require("./coin");
+const Coin = require("./coin");
 
-const coinSchema = coinObj.schema;
+const CoinSchema = Coin.schema;
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -18,11 +19,18 @@ const UserSchema = new mongoose.Schema({
     },
 
     subscriptions: {
-        type: [coinSchema],
+        type: [CoinSchema],
     },
 });
 
 //UserSchema.pre("save", (next) => {});
+
+UserSchema.methods.comparePassword = function (password, callback) {
+    bcrypt.compare(password, this.password, (err, correct) => {
+        if (err) return callback(err);
+        callback(null, correct);
+    });
+};
 
 UserSchema.set("timestamps", true);
 UserSchema.plugin(uniqueValidator);
