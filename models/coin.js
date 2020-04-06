@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const CoinSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     symbol: {
         type: String,
@@ -12,6 +14,10 @@ const CoinSchema = new mongoose.Schema({
     id: {
         type: Number,
         required: true,
+        unique: true,
+    },
+    icon: {
+        type: String,
     },
     color: {
         type: String,
@@ -20,6 +26,9 @@ const CoinSchema = new mongoose.Schema({
         type: Number,
     },
 });
+
+CoinSchema.set("timestamps", true);
+CoinSchema.plugin(uniqueValidator);
 
 module.exports = {
     schema: CoinSchema,

@@ -64,14 +64,7 @@ functions:
   authorize:
     handler: utils/auth/handler.checkJwt
 
-  btc:
-    handler: handler.getBTC
-    events:
-      - http:
-          path: /btc
-          method: get
-          authorizer: authorize
-
+  ### Users ###
   createUser:
     handler: controllers/users.createUser
     events:
@@ -79,14 +72,6 @@ functions:
           path: /users
           method: post
 
-  createCoin:
-    handler: controllers/coins.createCoin
-    events:
-      - http:
-          path: /coins
-          method: post
-          authorizer: authorize
-  
   subscribe:
     handler: controllers/users.subscribeToCoin
     events:
@@ -94,6 +79,34 @@ functions:
           path: /users/subscribe/{id}
           method: post
           authorizer: authorize
+
+    
+  ### Coins ###
+  btc:
+    handler: handler.getBTC
+    events:
+      - http:
+          path: /btc
+          method: get
+          authorizer: authorize
+  
+  createCoin:
+    handler: controllers/coins.createCoin
+    events:
+      - http:
+          path: /coins
+          method: post
+          authorizer: authorize
+    
+  findCoinByName:
+    handler: controllers/coins.findCoin
+    events:
+      - http:
+          path: /coins
+          method: get
+          authorizer: authorize
+  
+
 
 
 #    The following are a few example events you can configure

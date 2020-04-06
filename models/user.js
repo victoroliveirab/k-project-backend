@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
 
 //UserSchema.pre("save", (next) => {});
 
+UserSchema.set("timestamps", true);
 UserSchema.plugin(uniqueValidator);
 
 module.exports = {

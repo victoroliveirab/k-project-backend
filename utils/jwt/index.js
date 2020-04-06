@@ -11,5 +11,5 @@ module.exports.hashPassword = (password) =>
 
 module.exports.generateJwt = (id) =>
     jwt.sign({ id }, secret, {
-        expiresIn: 86400,
+        expiresIn: 86400 * 100, // only dev
     });
